@@ -3,15 +3,22 @@ export default async function handler(req, res) {
     const respuesta = await fetch(
       "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
       {
-        method: "POST"
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          codigoFinca: "PRUEBA",
+          pin: "00000"
+        })
       }
     );
 
-    const texto = await respuesta.text();
+    const resultado = await respuesta.json();
 
     res.status(200).json({
       exito: true,
-      respuestaAppsScript: texto
+      respuestaAppsScript: resultado
     });
 
   } catch (error) {
