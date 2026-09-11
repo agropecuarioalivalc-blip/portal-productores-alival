@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
     const respuesta = await fetch(
-      "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
+      "https://portal-de-productores-alival.vercel.app/api/login",
       {
         method: "POST",
         headers: {
@@ -16,14 +16,14 @@ export default async function handler(req, res) {
 
     const resultado = await respuesta.json();
 
-    res.status(200).json({
-      exito: true,
-      respuestaAppsScript: resultado
+    return res.status(200).json({
+      pruebaVercelLogin: true,
+      respuestaLogin: resultado
     });
 
   } catch (error) {
-    res.status(500).json({
-      exito: false,
+    return res.status(500).json({
+      pruebaVercelLogin: false,
       error: error.message
     });
   }
