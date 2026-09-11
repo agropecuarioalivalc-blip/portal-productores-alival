@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Portal de Productores ALIVAL</title>
 
   <style>
@@ -13,157 +14,274 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f7f5;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       padding: 20px;
-      color: #173b2a;
     }
 
-    .card {
+    .contenedor {
       width: 100%;
       max-width: 420px;
       background: white;
-      border-radius: 22px;
-      padding: 32px 26px;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      padding: 35px 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
       text-align: center;
     }
 
-    .brand {
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      color: #68756e;
-      margin: 0 0 28px;
-      font-size: 15px;
+    .logo {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
     h1 {
-      font-size: 23px;
       margin: 0 0 8px;
+      font-size: 24px;
     }
 
-    .help {
-      color: #68756e;
-      font-size: 14px;
-      margin: 0 0 22px;
+    .subtitulo {
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .campo {
+      text-align: left;
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
-      text-align: left;
+      margin-bottom: 7px;
+      font-weight: bold;
       font-size: 14px;
-      font-weight: 700;
-      margin: 15px 0 7px;
     }
 
     input {
       width: 100%;
-      padding: 14px 15px;
-      border: 1px solid #d7dfda;
-      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 9px;
       font-size: 16px;
-      outline: none;
-      background: #fafcfb;
     }
 
     input:focus {
-      border-color: #4f8f68;
-      box-shadow: 0 0 0 3px rgba(79, 143, 104, 0.12);
+      outline: none;
+      border-color: #777;
     }
 
     button {
       width: 100%;
-      margin-top: 24px;
-      padding: 15px;
-      border: 0;
-      border-radius: 12px;
-      background: #173b2a;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: #222;
       color: white;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: bold;
       cursor: pointer;
+      margin-top: 5px;
     }
 
-    .footer {
-      margin-top: 24px;
-      color: #89948e;
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #mensaje {
+      margin-top: 20px;
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    .exito {
+      color: #16803c;
+    }
+
+    .error {
+      color: #c62828;
+    }
+
+    .cargando {
+      color: #666;
+    }
+
+    .resultado {
+      margin-top: 25px;
+      padding: 18px;
+      background: #f4f6f8;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .resultado strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    footer {
+      margin-top: 30px;
       font-size: 12px;
+      color: #888;
     }
   </style>
 </head>
 
 <body>
 
-  <main class="card">
+  <div class="contenedor">
 
-    <div class="brand">ALIVAL</div>
+    <div class="logo">ALIVAL</div>
 
-    <p class="subtitle">
-      Portal de Productores
-    </p>
+    <h1>Portal de Productores</h1>
 
-    <h1>
+    <div class="subtitulo">
       Consulta tus documentos
-    </h1>
+    </div>
 
-    <p class="help">
-      Ingresa tu código de finca y PIN para continuar.
-    </p>
+    <form id="formularioLogin">
 
-    <form onsubmit="event.preventDefault(); mostrarMensaje();">
+      <div class="campo">
+        <label for="codigoFinca">Código de finca</label>
 
-      <label for="codigo">
-        Código de finca
-      </label>
+        <input
+          type="text"
+          id="codigoFinca"
+          placeholder="Ej. 1054"
+          inputmode="numeric"
+          autocomplete="username"
+          required
+        >
+      </div>
 
-      <input
-        id="codigo"
-        type="text"
-        inputmode="numeric"
-        placeholder="Ej. 1054"
-        autocomplete="off"
-      >
+      <div class="campo">
+        <label for="pin">PIN</label>
 
-      <label for="pin">
-        PIN
-      </label>
+        <input
+          type="password"
+          id="pin"
+          placeholder="Ingresa tu PIN"
+          inputmode="numeric"
+          autocomplete="current-password"
+          required
+        >
+      </div>
 
-      <input
-        id="pin"
-        type="password"
-        inputmode="numeric"
-        placeholder="Ingresa tu PIN"
-        autocomplete="off"
-      >
-
-      <button type="submit">
+      <button type="submit" id="botonIngresar">
         Ingresar
       </button>
 
     </form>
 
-    <div id="mensaje" class="footer">
-      Portal en etapa de configuración
-    </div>
+    <div id="mensaje"></div>
 
-  </main>
+    <div id="resultado" class="resultado" style="display:none;"></div>
+
+    <footer>
+      Portal de Productores ALIVAL
+    </footer>
+
+  </div>
+
 
   <script>
 
-    function mostrarMensaje() {
+    const formulario = document.getElementById("formularioLogin");
+    const botonIngresar = document.getElementById("botonIngresar");
+    const mensaje = document.getElementById("mensaje");
+    const resultado = document.getElementById("resultado");
 
-      document.getElementById("mensaje").textContent =
-        "Estamos preparando tu acceso. Próximamente podrás consultar tus reportes.";
+    formulario.addEventListener("submit", async function(event) {
 
-    }
+      event.preventDefault();
+
+      const codigoFinca = document
+        .getElementById("codigoFinca")
+        .value
+        .trim();
+
+      const pin = document
+        .getElementById("pin")
+        .value
+        .trim();
+
+      mensaje.className = "cargando";
+      mensaje.textContent = "Verificando acceso...";
+
+      resultado.style.display = "none";
+
+      botonIngresar.disabled = true;
+      botonIngresar.textContent = "Verificando...";
+
+      try {
+
+        const respuesta = await fetch("/api/login", {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            codigoFinca: codigoFinca,
+            pin: pin
+          })
+
+        });
+
+        const datos = await respuesta.json();
+
+        if (datos.exito) {
+
+          mensaje.className = "exito";
+          mensaje.textContent = "Acceso correcto.";
+
+          resultado.style.display = "block";
+
+          resultado.innerHTML = `
+            <strong>Bienvenido</strong>
+            ${datos.productor || ""}
+            <br><br>
+
+            <strong>Finca</strong>
+            ${datos.nombreFinca || ""}
+            <br><br>
+
+            <strong>Código</strong>
+            ${datos.codigoFinca || codigoFinca}
+          `;
+
+        } else {
+
+          mensaje.className = "error";
+          mensaje.textContent =
+            datos.mensaje || "Código de finca o PIN incorrecto.";
+
+        }
+
+      } catch (error) {
+
+        mensaje.className = "error";
+        mensaje.textContent =
+          "No fue posible conectar con el servidor.";
+
+      } finally {
+
+        botonIngresar.disabled = false;
+        botonIngresar.textContent = "Ingresar";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
 
   </script>
 
