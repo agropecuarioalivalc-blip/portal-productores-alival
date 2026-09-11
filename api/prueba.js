@@ -1,15 +1,15 @@
 export default async function handler(req, res) {
   try {
+
     const respuesta = await fetch(
-      "https://portal-de-productores-alival.vercel.app/api/login",
+      "https://portal-de-productores-alival.vercel.app/api/documentos",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          codigoFinca: "PRUEBA",
-          pin: "00000"
+          codigoFinca: "1054"
         })
       }
     );
@@ -17,13 +17,14 @@ export default async function handler(req, res) {
     const resultado = await respuesta.json();
 
     return res.status(200).json({
-      pruebaVercelLogin: true,
-      respuestaLogin: resultado
+      exito: true,
+      respuestaDocumentos: resultado
     });
 
   } catch (error) {
+
     return res.status(500).json({
-      pruebaVercelLogin: false,
+      exito: false,
       error: error.message
     });
   }
