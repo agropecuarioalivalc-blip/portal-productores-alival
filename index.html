@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <title>Portal de Productores ALIVAL</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -16,40 +18,39 @@
       min-height: 100vh;
       font-family: Arial, sans-serif;
       background: #f4f6f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       padding: 20px;
     }
 
     .contenedor {
       width: 100%;
-      max-width: 420px;
+      max-width: 480px;
+      margin: 30px auto;
       background: white;
       border-radius: 16px;
-      padding: 35px 25px;
+      padding: 30px 25px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.10);
-      text-align: center;
     }
 
     .logo {
+      text-align: center;
       font-size: 36px;
       font-weight: bold;
       margin-bottom: 5px;
     }
 
     h1 {
+      text-align: center;
       margin: 0 0 8px;
       font-size: 24px;
     }
 
     .subtitulo {
+      text-align: center;
       color: #666;
       margin-bottom: 30px;
     }
 
     .campo {
-      text-align: left;
       margin-bottom: 18px;
     }
 
@@ -83,7 +84,6 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 5px;
     }
 
     button:disabled {
@@ -93,6 +93,7 @@
 
     #mensaje {
       margin-top: 20px;
+      text-align: center;
       font-size: 14px;
       min-height: 20px;
     }
@@ -109,76 +110,266 @@
       color: #666;
     }
 
-    .resultado {
-      margin-top: 25px;
-      padding: 18px;
-      background: #f4f6f8;
-      border-radius: 10px;
-      text-align: left;
+    /* =========================
+       PANEL DEL PRODUCTOR
+       ========================= */
+
+    #panelProductor {
+      display: none;
     }
 
-    .resultado strong {
-      display: block;
+    .bienvenida {
+      background: #f4f6f8;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 25px;
+    }
+
+    .dato {
+      margin-bottom: 15px;
+    }
+
+    .dato:last-child {
+      margin-bottom: 0;
+    }
+
+    .dato-titulo {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .dato-valor {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .seccion-titulo {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    /* =========================
+       DOCUMENTOS
+       ========================= */
+
+    .documento {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: white;
+    }
+
+    .documento-tipo {
+      font-size: 13px;
+      color: #777;
       margin-bottom: 5px;
     }
 
+    .documento-periodo {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .documento-nombre {
+      font-size: 13px;
+      color: #666;
+      word-break: break-word;
+      margin-bottom: 12px;
+    }
+
+    .boton-documento {
+      background: #333;
+    }
+
+    .sin-documentos {
+      background: #f4f6f8;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: #666;
+    }
+
+    .boton-salir {
+      margin-top: 25px;
+      background: white;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
     footer {
+      text-align: center;
       margin-top: 30px;
       font-size: 12px;
       color: #888;
     }
+
   </style>
+
 </head>
 
 <body>
 
   <div class="contenedor">
 
-    <div class="logo">ALIVAL</div>
+    <!-- =========================
+         LOGIN
+         ========================= -->
 
-    <h1>Portal de Productores</h1>
+    <div id="pantallaLogin">
 
-    <div class="subtitulo">
-      Consulta tus documentos
+      <div class="logo">
+        ALIVAL
+      </div>
+
+      <h1>
+        Portal de Productores
+      </h1>
+
+      <div class="subtitulo">
+        Consulta tus documentos
+      </div>
+
+      <form id="formularioLogin">
+
+        <div class="campo">
+
+          <label for="codigoFinca">
+            Código de finca
+          </label>
+
+          <input
+            type="text"
+            id="codigoFinca"
+            placeholder="Ej. 1054"
+            inputmode="numeric"
+            autocomplete="username"
+            required
+          >
+
+        </div>
+
+
+        <div class="campo">
+
+          <label for="pin">
+            PIN
+          </label>
+
+          <input
+            type="password"
+            id="pin"
+            placeholder="Ingresa tu PIN"
+            inputmode="numeric"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+
+        <button
+          type="submit"
+          id="botonIngresar"
+        >
+          Ingresar
+        </button>
+
+      </form>
+
+
+      <div id="mensaje"></div>
+
     </div>
 
-    <form id="formularioLogin">
 
-      <div class="campo">
-        <label for="codigoFinca">Código de finca</label>
+    <!-- =========================
+         PANEL PRODUCTOR
+         ========================= -->
 
-        <input
-          type="text"
-          id="codigoFinca"
-          placeholder="Ej. 1054"
-          inputmode="numeric"
-          autocomplete="username"
-          required
-        >
+    <div id="panelProductor">
+
+      <div class="logo">
+        ALIVAL
       </div>
 
-      <div class="campo">
-        <label for="pin">PIN</label>
+      <h1>
+        Portal de Productores
+      </h1>
 
-        <input
-          type="password"
-          id="pin"
-          placeholder="Ingresa tu PIN"
-          inputmode="numeric"
-          autocomplete="current-password"
-          required
-        >
+
+      <div class="bienvenida">
+
+        <div class="dato">
+
+          <div class="dato-titulo">
+            Productor
+          </div>
+
+          <div
+            class="dato-valor"
+            id="nombreProductor"
+          ></div>
+
+        </div>
+
+
+        <div class="dato">
+
+          <div class="dato-titulo">
+            Finca
+          </div>
+
+          <div
+            class="dato-valor"
+            id="nombreFinca"
+          ></div>
+
+        </div>
+
+
+        <div class="dato">
+
+          <div class="dato-titulo">
+            Código
+          </div>
+
+          <div
+            class="dato-valor"
+            id="codigoFincaMostrar"
+          ></div>
+
+        </div>
+
       </div>
 
-      <button type="submit" id="botonIngresar">
-        Ingresar
+
+      <div class="seccion-titulo">
+        Mis documentos
+      </div>
+
+
+      <div id="estadoDocumentos">
+        Consultando documentos...
+      </div>
+
+
+      <div id="listaDocumentos"></div>
+
+
+      <button
+        type="button"
+        class="boton-salir"
+        id="botonSalir"
+      >
+        Cerrar sesión
       </button>
 
-    </form>
+    </div>
 
-    <div id="mensaje"></div>
-
-    <div id="resultado" class="resultado" style="display:none;"></div>
 
     <footer>
       Portal de Productores ALIVAL
@@ -189,101 +380,372 @@
 
   <script>
 
-    const formulario = document.getElementById("formularioLogin");
-    const botonIngresar = document.getElementById("botonIngresar");
-    const mensaje = document.getElementById("mensaje");
-    const resultado = document.getElementById("resultado");
+    const formulario =
+      document.getElementById("formularioLogin");
 
-    formulario.addEventListener("submit", async function(event) {
+    const botonIngresar =
+      document.getElementById("botonIngresar");
 
-      event.preventDefault();
+    const mensaje =
+      document.getElementById("mensaje");
 
-      const codigoFinca = document
-        .getElementById("codigoFinca")
-        .value
-        .trim();
+    const pantallaLogin =
+      document.getElementById("pantallaLogin");
 
-      const pin = document
-        .getElementById("pin")
-        .value
-        .trim();
+    const panelProductor =
+      document.getElementById("panelProductor");
 
-      mensaje.className = "cargando";
-      mensaje.textContent = "Verificando acceso...";
+    const nombreProductor =
+      document.getElementById("nombreProductor");
 
-      resultado.style.display = "none";
+    const nombreFinca =
+      document.getElementById("nombreFinca");
 
-      botonIngresar.disabled = true;
-      botonIngresar.textContent = "Verificando...";
+    const codigoFincaMostrar =
+      document.getElementById("codigoFincaMostrar");
 
-      try {
+    const estadoDocumentos =
+      document.getElementById("estadoDocumentos");
 
-        const respuesta = await fetch("/api/login", {
+    const listaDocumentos =
+      document.getElementById("listaDocumentos");
 
-          method: "POST",
+    const botonSalir =
+      document.getElementById("botonSalir");
 
-          headers: {
-            "Content-Type": "application/json"
-          },
 
-          body: JSON.stringify({
-            codigoFinca: codigoFinca,
-            pin: pin
-          })
+    /* =========================
+       LOGIN
+       ========================= */
 
-        });
+    formulario.addEventListener(
+      "submit",
+      async function(event) {
 
-        const datos = await respuesta.json();
+        event.preventDefault();
 
-        if (datos.exito) {
 
-          mensaje.className = "exito";
-          mensaje.textContent = "Acceso correcto.";
+        const codigoFinca =
+          document
+            .getElementById("codigoFinca")
+            .value
+            .trim();
 
-          resultado.style.display = "block";
 
-          resultado.innerHTML = `
-            <strong>Bienvenido</strong>
-            ${datos.productor || ""}
-            <br><br>
+        const pin =
+          document
+            .getElementById("pin")
+            .value
+            .trim();
 
-            <strong>Finca</strong>
-            ${datos.nombreFinca || ""}
-            <br><br>
 
-            <strong>Código</strong>
-            ${datos.codigoFinca || codigoFinca}
-          `;
+        mensaje.className = "cargando";
+        mensaje.textContent =
+          "Verificando acceso...";
 
-        } else {
 
-          mensaje.className = "error";
-          mensaje.textContent =
-            datos.mensaje || "Código de finca o PIN incorrecto.";
+        botonIngresar.disabled = true;
+        botonIngresar.textContent =
+          "Verificando...";
+
+
+        try {
+
+          const respuesta =
+            await fetch(
+              "/api/login",
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                  codigoFinca: codigoFinca,
+                  pin: pin
+                })
+              }
+            );
+
+
+          const datos =
+            await respuesta.json();
+
+
+          if (!datos.exito) {
+
+            mensaje.className = "error";
+
+            mensaje.textContent =
+              datos.mensaje ||
+              "Código de finca o PIN incorrecto.";
+
+            return;
+          }
+
+
+          /* =========================
+             LOGIN CORRECTO
+             ========================= */
+
+          pantallaLogin.style.display =
+            "none";
+
+          panelProductor.style.display =
+            "block";
+
+
+          nombreProductor.textContent =
+            datos.productor || "";
+
+
+          nombreFinca.textContent =
+            datos.nombreFinca || "";
+
+
+          codigoFincaMostrar.textContent =
+            datos.codigoFinca ||
+            codigoFinca;
+
+
+          await cargarDocumentos(
+            datos.codigoFinca ||
+            codigoFinca
+          );
 
         }
 
-      } catch (error) {
+        catch (error) {
 
-        mensaje.className = "error";
-        mensaje.textContent =
-          "No fue posible conectar con el servidor.";
+          mensaje.className = "error";
 
-      } finally {
+          mensaje.textContent =
+            "No fue posible conectar con el servidor.";
 
-        botonIngresar.disabled = false;
-        botonIngresar.textContent = "Ingresar";
+        }
+
+        finally {
+
+          botonIngresar.disabled =
+            false;
+
+          botonIngresar.textContent =
+            "Ingresar";
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       CONSULTAR DOCUMENTOS
+       ========================= */
+
+    async function cargarDocumentos(
+      codigoFinca
+    ) {
+
+      estadoDocumentos.textContent =
+        "Consultando documentos...";
+
+      listaDocumentos.innerHTML = "";
+
+
+      try {
+
+        const respuesta =
+          await fetch(
+            "/api/documentos",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                codigoFinca: codigoFinca
+              })
+            }
+          );
+
+
+        const datos =
+          await respuesta.json();
+
+
+        if (!datos.exito) {
+
+          estadoDocumentos.textContent =
+            datos.mensaje ||
+            "No fue posible consultar los documentos.";
+
+          return;
+        }
+
+
+        const documentos =
+          datos.documentos || [];
+
+
+        if (documentos.length === 0) {
+
+          estadoDocumentos.textContent = "";
+
+          listaDocumentos.innerHTML = `
+            <div class="sin-documentos">
+              No hay documentos disponibles.
+            </div>
+          `;
+
+          return;
+        }
+
+
+        estadoDocumentos.textContent =
+          "Documentos disponibles:";
+
+
+        documentos.forEach(
+          function(documento) {
+
+            const tarjeta =
+              document.createElement("div");
+
+            tarjeta.className =
+              "documento";
+
+
+            const tipo =
+              document.createElement("div");
+
+            tipo.className =
+              "documento-tipo";
+
+            tipo.textContent =
+              documento.tipoDocumento ||
+              "DOCUMENTO";
+
+
+            const periodo =
+              document.createElement("div");
+
+            periodo.className =
+              "documento-periodo";
+
+            periodo.textContent =
+              (documento.mes || "") +
+              " " +
+              (documento.anio || "");
+
+
+            const nombre =
+              document.createElement("div");
+
+            nombre.className =
+              "documento-nombre";
+
+            nombre.textContent =
+              documento.nombreArchivo ||
+              "";
+
+
+            const boton =
+              document.createElement("button");
+
+            boton.type = "button";
+
+            boton.className =
+              "boton-documento";
+
+            boton.textContent =
+              "Ver documento";
+
+
+            /*
+              La descarga todavía no está conectada.
+              En el siguiente paso construiremos
+              el acceso seguro al PDF.
+            */
+
+            boton.addEventListener(
+              "click",
+              function() {
+
+                alert(
+                  "La visualización de documentos se habilitará en el siguiente paso."
+                );
+
+              }
+            );
+
+
+            tarjeta.appendChild(tipo);
+
+            tarjeta.appendChild(periodo);
+
+            tarjeta.appendChild(nombre);
+
+            tarjeta.appendChild(boton);
+
+
+            listaDocumentos.appendChild(
+              tarjeta
+            );
+
+          }
+        );
 
       }
 
-    });
+      catch (error) {
+
+        estadoDocumentos.textContent =
+          "No fue posible consultar los documentos.";
+
+      }
+
+    }
+
+
+    /* =========================
+       CERRAR SESIÓN
+       ========================= */
+
+    botonSalir.addEventListener(
+      "click",
+      function() {
+
+        panelProductor.style.display =
+          "none";
+
+        pantallaLogin.style.display =
+          "block";
+
+
+        document
+          .getElementById("codigoFinca")
+          .value = "";
+
+
+        document
+          .getElementById("pin")
+          .value = "";
+
+
+        mensaje.textContent = "";
+
+        listaDocumentos.innerHTML = "";
+
+      }
+    );
 
   </script>
 
 </body>
-</html>
 
-  </script>
-
-</body>
 </html>
