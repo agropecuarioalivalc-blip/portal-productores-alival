@@ -666,22 +666,68 @@
               "Ver documento";
 
 
-            /*
-              La descarga todavía no está conectada.
-              En el siguiente paso construiremos
-              el acceso seguro al PDF.
-            */
+           boton.addEventListener(
+  "click",
+  async function() {
 
-            boton.addEventListener(
-              "click",
-              function() {
+    boton.disabled = true;
+    boton.textContent = "Cargando...";
 
-                alert(
-                  "La visualización de documentos se habilitará en el siguiente paso."
-                );
+    try {
 
-              }
-            );
+      const respuesta = await fetch(
+        "/api/ver-documento",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            codigoFinca: codigoFinca,
+            anio: doc.anio,
+            mes: doc.mes
+          })
+        }
+      );
+
+      const resultado = await respuesta.json();
+
+      if (!resultado.exito) {
+        throw new Error(
+          resultado.mensaje ||
+          "No fue posible obtener el documento."
+        );
+      }
+
+      const datosPDF =
+        "data:" +
+        resultado.tipoMime +
+        ";base64," +
+        resultado.archivoBase64;
+
+      window.open(
+        datosPDF,
+        "_blank"
+      );
+
+    }
+    catch (error) {
+
+      alert(
+        error.message ||
+        "No fue posible abrir el documento."
+      );
+
+    }
+    finally {
+
+      boton.disabled = false;
+      boton.textContent = "Ver documento";
+
+    }
+
+  }
+);
 
 
             tarjeta.appendChild(tipo);
