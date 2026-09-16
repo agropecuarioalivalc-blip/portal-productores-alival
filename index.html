@@ -699,16 +699,31 @@
         );
       }
 
-      const datosPDF =
-        "data:" +
-        resultado.tipoMime +
-        ";base64," +
-        resultado.archivoBase64;
+      const binario =
+  atob(resultado.archivoBase64);
 
-      window.open(
-        datosPDF,
-        "_blank"
-      );
+const bytes =
+  new Uint8Array(binario.length);
+
+for (let i = 0; i < binario.length; i++) {
+  bytes[i] = binario.charCodeAt(i);
+}
+
+const blob =
+  new Blob(
+    [bytes],
+    {
+      type: resultado.tipoMime
+    }
+  );
+
+const url =
+  URL.createObjectURL(blob);
+
+window.open(
+  url,
+  "_blank"
+);
 
     }
     catch (error) {
