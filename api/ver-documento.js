@@ -1,3 +1,5 @@
+import { verificarToken } from "./auth.js";
+
 export default async function handler(req, res) {
   try {
 
@@ -17,6 +19,49 @@ export default async function handler(req, res) {
       });
     }
 
+    // =========================
+    // VERIFICAR SESIÓN
+    // =========================
+
+    const autorizacion =
+      req.headers.authorization || "";
+
+    const token =
+      autorizacion.startsWith("Bearer ")
+        ? autorizacion.substring(7)
+        : "";
+
+    const sesion =
+      verificarToken(token);
+
+    if (!sesion) {
+      return res.status(401).json({
+        exito: false,
+        mensaje: "Sesión no válida o expirada"
+      });
+    }
+
+    // =========================
+    // VERIFICAR FINCA
+    // =========================
+
+    const codigoSolicitado =
+      String(codigoFinca).trim();
+
+    if (
+      String(sesion.codigoFinca).trim() !==
+      codigoSolicitado
+    ) {
+      return res.status(403).json({
+        exito: false,
+        mensaje: "No autorizado"
+      });
+    }
+
+    // =========================
+    // CONSULTAR PDF
+    // =========================
+
     const respuesta = await fetch(
       "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
       {
@@ -26,16 +71,19 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           accion: "verDocumento",
-          codigoFinca: String(codigoFinca).trim(),
+          codigoFinca: codigoSolicitado,
           anio: anio,
           mes: String(mes).trim().toUpperCase()
         })
       }
     );
 
-    const resultado = await respuesta.json();
+    const resultado =
+      await respuesta.json();
 
-    return res.status(respuesta.ok ? 200 : 500).json(resultado);
+    return res.status(
+      respuesta.ok ? 200 : 500
+    ).json(resultado);
 
   } catch (error) {
 
