@@ -71,12 +71,11 @@ export default async function handler(req, res) {
       respuesta.ok ? 200 : 500
     ).json(resultado);
 
-  } catch (error) {
+    } catch (error) {
 
     return res.status(500).json({
       exito: false,
-      mensaje: "No fue posible consultar los documentos"
+      mensaje: error.message
     });
 
   }
-}
