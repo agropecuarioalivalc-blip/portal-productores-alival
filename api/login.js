@@ -1,5 +1,8 @@
+import { crearToken } from "./auth.js";
+
 export default async function handler(req, res) {
   try {
+
     if (req.method !== "POST") {
       return res.status(405).json({
         exito: false,
@@ -32,12 +35,28 @@ export default async function handler(req, res) {
 
     const resultado = await respuesta.json();
 
-    return res.status(respuesta.ok ? 200 : 500).json(resultado);
+    if (!resultado.exito) {
+      return res.status(200).json(resultado);
+    }
+
+    const token = crearToken(
+      resultado.codigoFinca
+    );
+
+    return res.status(200).json({
+      exito: true,
+      productor: resultado.productor,
+      codigoFinca: resultado.codigoFinca,
+      nombreFinca: resultado.nombreFinca,
+      token: token
+    });
 
   } catch (error) {
+
     return res.status(500).json({
       exito: false,
       mensaje: "No fue posible procesar la solicitud"
     });
+
   }
 }
