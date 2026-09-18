@@ -559,22 +559,24 @@ const codigoFincaSesion = datos.codigoFinca;
 
       try {
 
-        const respuesta =
-          await fetch(
-            "/api/documentos",
-            {
-              method: "POST",
+       const respuesta =
+  await fetch(
+    "/api/documentos",
+    {
+      method: "POST",
 
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
+      headers: {
+        "Content-Type":
+          "application/json",
+        "Authorization":
+          "Bearer " + tokenSesion
+      },
 
-              body: JSON.stringify({
-                codigoFinca: codigoFinca
-              })
-            }
-          );
+      body: JSON.stringify({
+        codigoFinca: codigoFinca
+      })
+    }
+  );
 
 
         const datos =
