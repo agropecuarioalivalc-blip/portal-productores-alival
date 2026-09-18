@@ -1,4 +1,4 @@
-import { crearToken } from "./auth.js";
+const { crearToken } = require("./auth.js");
 
 export default async function handler(req, res) {
   try {
