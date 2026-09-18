@@ -1,4 +1,4 @@
-import { verificarToken } from "./auth.js";
+const { verificarToken } = require("./auth.js");
 
 export default async function handler(req, res) {
   try {
