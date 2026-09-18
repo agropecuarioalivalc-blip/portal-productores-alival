@@ -680,20 +680,22 @@ const codigoFincaSesion = datos.codigoFinca;
 
     try {
 
-      const respuesta = await fetch(
-        "/api/ver-documento",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-  codigoFinca: codigoFinca,
-  anio: documento.anio,
-  mes: documento.mes
-})
-        }
-      );
+     const respuesta = await fetch(
+  "/api/ver-documento",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization":
+        "Bearer " + tokenSesion
+    },
+    body: JSON.stringify({
+      codigoFinca: codigoFinca,
+      anio: documento.anio,
+      mes: documento.mes
+    })
+  }
+);
 
       const resultado = await respuesta.json();
 
