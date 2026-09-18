@@ -1,6 +1,6 @@
-import crypto from "crypto";
+const crypto = require("crypto");
 
-const DURACION_TOKEN = 60 * 60; // 1 hora
+const DURACION_TOKEN = 60 * 60;
 
 function base64url(texto) {
   return Buffer.from(texto)
@@ -26,7 +26,7 @@ function firmar(datos) {
     .replace(/=+$/, "");
 }
 
-export function crearToken(codigoFinca) {
+function crearToken(codigoFinca) {
 
   const ahora = Math.floor(Date.now() / 1000);
 
@@ -44,7 +44,7 @@ export function crearToken(codigoFinca) {
   return datos + "." + firma;
 }
 
-export function verificarToken(token) {
+function verificarToken(token) {
 
   try {
 
@@ -90,3 +90,8 @@ export function verificarToken(token) {
     return null;
   }
 }
+
+module.exports = {
+  crearToken,
+  verificarToken
+};
