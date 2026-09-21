@@ -1,5 +1,3 @@
-const { crearToken } = require("./auth.js");
-
 export default async function handler(req, res) {
   try {
 
@@ -44,12 +42,11 @@ export default async function handler(req, res) {
     );
 
     return res.status(200).json({
-      exito: true,
-      productor: resultado.productor,
-      codigoFinca: resultado.codigoFinca,
-      nombreFinca: resultado.nombreFinca,
-      token: token
-    });
+  exito: true,
+  productor: resultado.productor,
+  codigoFinca: resultado.codigoFinca,
+  nombreFinca: resultado.nombreFinca
+});
 
   } catch (error) {
 
