@@ -37,11 +37,7 @@ export default async function handler(req, res) {
       return res.status(200).json(resultado);
     }
 
-    const token = crearToken(
-      resultado.codigoFinca
-    );
-
-    return res.status(200).json({
+        return res.status(200).json({
   exito: true,
   productor: resultado.productor,
   codigoFinca: resultado.codigoFinca,
