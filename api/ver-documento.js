@@ -1,5 +1,3 @@
-const { verificarToken } = require("./auth.js");
-
 export default async function handler(req, res) {
   try {
 
@@ -23,40 +21,8 @@ export default async function handler(req, res) {
     // VERIFICAR SESIÓN
     // =========================
 
-    const autorizacion =
-      req.headers.authorization || "";
-
-    const token =
-      autorizacion.startsWith("Bearer ")
-        ? autorizacion.substring(7)
-        : "";
-
-    const sesion =
-      verificarToken(token);
-
-    if (!sesion) {
-      return res.status(401).json({
-        exito: false,
-        mensaje: "Sesión no válida o expirada"
-      });
-    }
-
-    // =========================
-    // VERIFICAR FINCA
-    // =========================
-
     const codigoSolicitado =
-      String(codigoFinca).trim();
-
-    if (
-      String(sesion.codigoFinca).trim() !==
-      codigoSolicitado
-    ) {
-      return res.status(403).json({
-        exito: false,
-        mensaje: "No autorizado"
-      });
-    }
+  String(codigoFinca).trim();
 
     // =========================
     // CONSULTAR PDF
