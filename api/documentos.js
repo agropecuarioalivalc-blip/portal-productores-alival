@@ -18,7 +18,7 @@ module.exports = async function handler(req, res) {
     }
 
     const codigoSolicitado =
-  String(codigoFinca).trim();
+      String(codigoFinca).trim();
 
     const respuesta = await fetch(
       "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
@@ -41,7 +41,7 @@ module.exports = async function handler(req, res) {
       respuesta.ok ? 200 : 500
     ).json(resultado);
 
-    } catch (error) {
+  } catch (error) {
 
     return res.status(500).json({
       exito: false,
@@ -49,3 +49,4 @@ module.exports = async function handler(req, res) {
     });
 
   }
+};
