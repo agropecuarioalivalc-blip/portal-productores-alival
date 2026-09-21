@@ -490,8 +490,7 @@
              LOGIN CORRECTO
              ========================= */
 
-          const tokenSesion = datos.token;
-const codigoFincaSesion = datos.codigoFinca;
+          const codigoFincaSesion = datos.codigoFinca;
 
           pantallaLogin.style.display =
             "none";
@@ -558,7 +557,7 @@ const codigoFincaSesion = datos.codigoFinca;
 
 
       try {
-alert("Llegué a consultar documentos");
+
        const respuesta =
   await fetch(
     "/api/documentos",
@@ -566,11 +565,9 @@ alert("Llegué a consultar documentos");
       method: "POST",
 
       headers: {
-        "Content-Type":
-          "application/json",
-        "Authorization":
-          "Bearer " + tokenSesion
-      },
+  "Content-Type":
+    "application/json"
+},
 
       body: JSON.stringify({
         codigoFinca: codigoFinca
@@ -686,8 +683,9 @@ alert("Llegué a consultar documentos");
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization":
-        "Bearer " + tokenSesion
+      headers: {
+  "Content-Type": "application/json"
+},
     },
     body: JSON.stringify({
       codigoFinca: codigoFinca,
