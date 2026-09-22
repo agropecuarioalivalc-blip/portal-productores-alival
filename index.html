@@ -1169,8 +1169,30 @@ tipo.classList.add(
         enlace.rel =
           "noopener noreferrer";
 
-        enlace.textContent =
-          "Ver información";
+        let textoEnlace = "Ver información";
+
+if (tipoComunicacion === "RECOMENDACION") {
+  textoEnlace = "Ver recomendación";
+}
+
+if (tipoComunicacion === "IMPORTANTE") {
+  textoEnlace = "Ver información";
+}
+
+if (tipoComunicacion === "EVENTO") {
+  textoEnlace = "Ver evento";
+}
+
+if (tipoComunicacion === "FORMULARIO") {
+  textoEnlace = "Abrir formulario";
+}
+
+if (tipoComunicacion === "DOCUMENTO") {
+  textoEnlace = "Ver documento";
+}
+
+enlace.textContent =
+  textoEnlace;
 
         elemento.appendChild(enlace);
       }
