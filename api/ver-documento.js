@@ -51,7 +51,7 @@ module.exports = async function handler(req, res) {
       respuesta.ok ? 200 : 500
     ).json(resultado);
 
-   } catch (error) {
+    } catch (error) {
 
     return res.status(500).json({
       exito: false,
