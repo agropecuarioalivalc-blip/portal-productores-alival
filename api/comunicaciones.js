@@ -18,11 +18,8 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    const codigoSolicitado =
-      String(codigoFinca).trim();
-
-   const respuesta = await fetch(
-  "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
+    const respuesta = await fetch(
+      "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
       {
         method: "POST",
 
@@ -32,43 +29,28 @@ module.exports = async function handler(req, res) {
 
         body: JSON.stringify({
           accion: "comunicaciones",
-          codigoFinca: codigoSolicitado
+          codigoFinca: String(codigoFinca).trim()
         })
       }
     );
 
-    const texto =
-      await respuesta.text();
+    const texto = await respuesta.text();
 
-    let resultado;
-
-    try {
-
-      resultado =
-        JSON.parse(texto);
-
-    } catch (error) {
-
-      return res.status(500).json({
-        exito: false,
-        mensaje:
-          "Apps Script no devolvió JSON válido: " +
-          texto.substring(0, 500)
-      });
-
-    }
-
-    return res.status(
-      respuesta.ok ? 200 : 500
-    ).json(resultado);
+    return res.status(200).json({
+      prueba: true,
+      estadoGoogle: respuesta.status,
+      urlFinal: respuesta.url,
+      tipoContenido:
+        respuesta.headers.get("content-type"),
+      respuestaInicio:
+        texto.substring(0, 1000)
+    });
 
   } catch (error) {
 
     return res.status(500).json({
       exito: false,
-      mensaje:
-        "ERROR INTERNO VERCEL: " +
-        error.message
+      mensaje: error.message
     });
 
   }
