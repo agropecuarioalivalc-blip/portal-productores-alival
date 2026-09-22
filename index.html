@@ -488,6 +488,38 @@
 .comunicacion-enlace:hover {
   text-decoration: underline;
 }
+/* =========================
+   AVISO DOCUMENTOS ANTERIORES
+========================= */
+
+.aviso-documentos-anteriores {
+  margin-top: 18px;
+  padding: 15px;
+  background: #f5f8fa;
+  border: 1px solid #dce5eb;
+  border-radius: 12px;
+  color: #555555;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.aviso-documentos-anteriores strong {
+  display: block;
+  color: #0066a6;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.aviso-documentos-anteriores a {
+  color: #0066a6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.aviso-documentos-anteriores a:hover {
+  text-decoration: underline;
+}    
   </style>
 </head>
 
@@ -968,7 +1000,27 @@ await cargarComunicaciones(
 
         });
 
+const aviso =
+  document.createElement("div");
 
+aviso.className =
+  "aviso-documentos-anteriores";
+
+aviso.innerHTML =
+  '<strong>¿Necesitas consultar un informe anterior?</strong>' +
+  '<br>' +
+  'Si deseas solicitar un reporte de un periodo anterior, ' +
+  'puedes comunicarte con el equipo de Agropecuario:' +
+  '<br><br>' +
+  '<a href="mailto:fguerrero@alival.com.co">' +
+  'fguerrero@alival.com.co' +
+  '</a>' +
+  '<br>' +
+  '<a href="mailto:pracagrope@alival.com.co">' +
+  'pracagrope@alival.com.co' +
+  '</a>';
+
+contenedor.appendChild(aviso);
       } catch (error) {
 
         contenedor.innerHTML =
