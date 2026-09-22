@@ -18,10 +18,6 @@
       color: #263238;
     }
 
-    /* =========================
-       BARRA SUPERIOR
-    ========================= */
-
     .barra-superior {
       height: 7px;
       display: flex;
@@ -41,10 +37,6 @@
       flex: 2;
       background: #0066a6;
     }
-
-    /* =========================
-       CONTENEDOR PRINCIPAL
-    ========================= */
 
     .pagina {
       min-height: calc(100vh - 7px);
@@ -373,7 +365,7 @@
     }
 
     /* =========================
-       PIE DE PÁGINA
+       PIE
     ========================= */
 
     .pie {
@@ -446,9 +438,7 @@
 
     <div class="contenedor">
 
-      <!-- =========================
-           MARCA
-      ========================== -->
+      <!-- MARCA -->
 
       <div class="marca">
 
@@ -470,9 +460,8 @@
 
       </div>
 
-      <!-- =========================
-           LOGIN
-      ========================== -->
+
+      <!-- LOGIN -->
 
       <div id="login" class="tarjeta">
 
@@ -517,7 +506,7 @@
         <button
           id="btnIngresar"
           class="boton boton-principal"
-          onclick="iniciarSesion()"
+          type="button"
         >
           Ingresar
         </button>
@@ -525,9 +514,7 @@
       </div>
 
 
-      <!-- =========================
-           PORTAL
-      ========================== -->
+      <!-- PORTAL -->
 
       <div id="portal" class="tarjeta oculto">
 
@@ -560,17 +547,20 @@
           </h2>
 
           <div id="listaDocumentos">
+
             <div class="cargando">
               Cargando documentos...
             </div>
+
           </div>
 
         </div>
 
 
         <button
+          id="btnCerrarSesion"
           class="boton boton-secundario"
-          onclick="cerrarSesion()"
+          type="button"
         >
           Cerrar sesión
         </button>
@@ -659,9 +649,6 @@
             "error"
           );
 
-          boton.disabled = false;
-          boton.textContent = "Ingresar";
-
           return;
         }
 
@@ -707,7 +694,8 @@
 
         mostrarMensaje(
           "mensajeLogin",
-          "No fue posible conectarse con el portal. Intente nuevamente.",
+          "No fue posible conectarse con el portal: " +
+          error.message,
           "error"
         );
 
@@ -761,7 +749,8 @@
 
           contenedor.innerHTML =
             '<div class="sin-documentos">' +
-            'No fue posible cargar los documentos.' +
+            (resultado.mensaje ||
+            'No fue posible cargar los documentos.') +
             '</div>';
 
           return;
@@ -786,112 +775,113 @@
         contenedor.innerHTML = "";
 
 
-       documentos.forEach(function(doc) {
+        documentos.forEach(function(doc) {
 
-  const elemento =
-    document.createElement("div");
+          const elemento =
+            document.createElement("div");
 
-  elemento.className =
-    "documento";
-
-
-  const periodo =
-    (doc.mes || "") +
-    " " +
-    (doc.anio || "");
+          elemento.className =
+            "documento";
 
 
-  const cabecera =
-    document.createElement("div");
-
-  cabecera.className =
-    "documento-cabecera";
-
-
-  const informacion =
-    document.createElement("div");
-
-  informacion.className =
-    "documento-info";
+          const periodo =
+            (doc.mes || "") +
+            " " +
+            (doc.anio || "");
 
 
-  const tipo =
-    document.createElement("div");
+          const cabecera =
+            document.createElement("div");
 
-  tipo.className =
-    "documento-tipo";
-
-  tipo.textContent =
-    doc.tipoDocumento || "DOCUMENTO";
+          cabecera.className =
+            "documento-cabecera";
 
 
-  const periodoElemento =
-    document.createElement("div");
+          const informacion =
+            document.createElement("div");
 
-  periodoElemento.className =
-    "documento-periodo";
-
-  periodoElemento.textContent =
-    periodo;
+          informacion.className =
+            "documento-info";
 
 
-  const nombre =
-    document.createElement("div");
+          const tipo =
+            document.createElement("div");
 
-  nombre.className =
-    "documento-nombre";
+          tipo.className =
+            "documento-tipo";
 
-  nombre.textContent =
-    doc.nombreArchivo || "";
-
-
-  informacion.appendChild(tipo);
-  informacion.appendChild(periodoElemento);
-  informacion.appendChild(nombre);
+          tipo.textContent =
+            doc.tipoDocumento || "DOCUMENTO";
 
 
-  const boton =
-    document.createElement("button");
+          const periodoElemento =
+            document.createElement("div");
 
-  boton.className =
-    "boton boton-documento";
+          periodoElemento.className =
+            "documento-periodo";
 
-  boton.type =
-    "button";
-
-  boton.textContent =
-    "Ver documento";
+          periodoElemento.textContent =
+            periodo;
 
 
-  boton.addEventListener(
-    "click",
-    function() {
+          const nombre =
+            document.createElement("div");
 
-      verDocumento(
-        codigoFinca,
-        doc.anio,
-        doc.mes
-      );
+          nombre.className =
+            "documento-nombre";
 
-    }
-  );
+          nombre.textContent =
+            doc.nombreArchivo || "";
 
 
-  cabecera.appendChild(informacion);
-  cabecera.appendChild(boton);
+          informacion.appendChild(tipo);
+          informacion.appendChild(periodoElemento);
+          informacion.appendChild(nombre);
 
-  elemento.appendChild(cabecera);
 
-  contenedor.appendChild(elemento);
+          const boton =
+            document.createElement("button");
 
-});
+          boton.className =
+            "boton boton-documento";
+
+          boton.type =
+            "button";
+
+          boton.textContent =
+            "Ver documento";
+
+
+          boton.addEventListener(
+            "click",
+            function() {
+
+              verDocumento(
+                codigoFinca,
+                doc.anio,
+                doc.mes
+              );
+
+            }
+          );
+
+
+          cabecera.appendChild(informacion);
+          cabecera.appendChild(boton);
+
+          elemento.appendChild(cabecera);
+
+          contenedor.appendChild(elemento);
+
+        });
 
 
       } catch (error) {
 
         contenedor.innerHTML =
           '<div class="sin-documentos">' +
-          'No fue posible cargar los documentos.' +
+          'Error al cargar documentos: ' +
+          error.message +
           '</div>';
 
       }
@@ -931,26 +921,44 @@
 
       try {
 
-        const respuesta = await fetch(
-          "/api/ver-documento",
-          {
-            method: "POST",
+        const respuesta =
+          await fetch(
+            "/api/ver-documento",
+            {
+              method: "POST",
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+              headers: {
+                "Content-Type": "application/json"
+              },
 
-            body: JSON.stringify({
-              codigoFinca: codigoFinca,
-              anio: anio,
-              mes: String(mes).trim().toUpperCase()
-            })
-          }
-        );
+              body: JSON.stringify({
+                codigoFinca: String(codigoFinca).trim(),
+                anio: String(anio).trim(),
+                mes: String(mes).trim().toUpperCase()
+              })
+            }
+          );
 
 
-        const resultado =
-          await respuesta.json();
+        const texto =
+          await respuesta.text();
+
+
+        let resultado;
+
+        try {
+
+          resultado =
+            JSON.parse(texto);
+
+        } catch (error) {
+
+          throw new Error(
+            "Vercel no devolvió un JSON válido. Respuesta: " +
+            texto.substring(0, 300)
+          );
+
+        }
 
 
         if (!resultado.exito) {
@@ -968,12 +976,28 @@
         }
 
 
+        if (!resultado.archivoBase64) {
+
+          if (ventana) {
+            ventana.close();
+          }
+
+          alert(
+            "El servidor encontró el documento, pero no recibió el archivo PDF."
+          );
+
+          return;
+        }
+
+
         const byteCharacters =
           atob(resultado.archivoBase64);
 
 
         const byteNumbers =
-          new Array(byteCharacters.length);
+          new Array(
+            byteCharacters.length
+          );
 
 
         for (
@@ -989,7 +1013,9 @@
 
 
         const byteArray =
-          new Uint8Array(byteNumbers);
+          new Uint8Array(
+            byteNumbers
+          );
 
 
         const blob =
@@ -1009,7 +1035,8 @@
 
         if (ventana) {
 
-          ventana.location.href = url;
+          ventana.location.href =
+            url;
 
         } else {
 
@@ -1020,18 +1047,21 @@
 
         }
 
-
       } catch (error) {
 
-    if (ventana) {
-      ventana.close();
+        if (ventana) {
+          ventana.close();
+        }
+
+        alert(
+          "ERROR AL ABRIR DOCUMENTO: " +
+          error.message
+        );
+
+      }
+
     }
 
-    alert(
-      "ERROR REAL: " + error.message
-    );
-
-}
 
     // ==========================================
     // CERRAR SESIÓN
@@ -1062,14 +1092,20 @@
       ).classList.remove("oculto");
 
 
-      limpiarMensaje("mensajeLogin");
-      limpiarMensaje("mensajePortal");
+      limpiarMensaje(
+        "mensajeLogin"
+      );
+
+
+      limpiarMensaje(
+        "mensajePortal"
+      );
 
     }
 
 
     // ==========================================
-    // MENSAJES
+    // MOSTRAR MENSAJES
     // ==========================================
 
     function mostrarMensaje(
@@ -1109,24 +1145,16 @@
 
 
     // ==========================================
-    // SEGURIDAD BÁSICA HTML
-    // ==========================================
-
-    function escaparHTML(texto) {
-
-      return String(texto)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
-
-
-    // ==========================================
     // ENTER PARA INGRESAR
     // ==========================================
+
+    document
+      .getElementById("btnIngresar")
+      .addEventListener(
+        "click",
+        iniciarSesion
+      );
+
 
     document
       .getElementById("pin")
@@ -1141,6 +1169,18 @@
           }
 
         }
+      );
+
+
+    // ==========================================
+    // CERRAR SESIÓN
+    // ==========================================
+
+    document
+      .getElementById("btnCerrarSesion")
+      .addEventListener(
+        "click",
+        cerrarSesion
       );
 
   </script>
