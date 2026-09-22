@@ -520,6 +520,13 @@
 .aviso-documentos-anteriores a:hover {
   text-decoration: underline;
 }    
+.texto-documentos-recientes {
+  margin-bottom: 12px;
+  color: #666666;
+  font-size: 13px;
+  text-align: center;
+}
+    
   </style>
 </head>
 
@@ -897,8 +904,10 @@ await cargarComunicaciones(
         }
 
 
-        contenedor.innerHTML = "";
-
+      contenedor.innerHTML =
+  '<div class="texto-documentos-recientes">' +
+  'Aquí puedes consultar tus 3 informes más recientes.' +
+  '</div>';
 
         documentos.forEach(function(doc) {
 
