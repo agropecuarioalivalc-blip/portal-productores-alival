@@ -21,8 +21,8 @@ module.exports = async function handler(req, res) {
     const codigoSolicitado =
       String(codigoFinca).trim();
 
-    const respuesta = await fetch(
-      "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
+   const respuesta = await fetch(
+  "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
       {
         method: "POST",
 
