@@ -775,9 +775,13 @@
     ).classList.remove("oculto");
 
 
-    await cargarDocumentos(
-      resultado.codigoFinca
-    );
+   await cargarDocumentos(
+  resultado.codigoFinca
+);
+
+await cargarComunicaciones(
+  resultado.codigoFinca
+);
 
 
   } catch (error) {
@@ -976,6 +980,130 @@
       }
 
     }
+
+    async function cargarComunicaciones(codigoFinca) {
+
+  const seccion =
+    document.getElementById("seccionComunicaciones");
+
+  const contenedor =
+    document.getElementById("listaComunicaciones");
+
+  seccion.classList.add("oculto");
+
+  contenedor.innerHTML = "";
+
+  try {
+
+    const respuesta = await fetch(
+      "/api/comunicaciones",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          codigoFinca: codigoFinca
+        })
+      }
+    );
+
+    const resultado =
+      await respuesta.json();
+
+    if (!resultado.exito) {
+      return;
+    }
+
+    const comunicaciones =
+      resultado.comunicaciones || [];
+
+    if (comunicaciones.length === 0) {
+      return;
+    }
+
+    contenedor.innerHTML = "";
+
+    comunicaciones.forEach(function(comunicacion) {
+
+      const elemento =
+        document.createElement("div");
+
+      elemento.className =
+        "comunicacion";
+
+      const tipo =
+        document.createElement("div");
+
+      tipo.className =
+        "comunicacion-tipo";
+
+      tipo.textContent =
+        comunicacion.tipo || "INFORMACIÓN";
+
+      const titulo =
+        document.createElement("div");
+
+      titulo.className =
+        "comunicacion-titulo";
+
+      titulo.textContent =
+        comunicacion.titulo || "";
+
+      const descripcion =
+        document.createElement("div");
+
+      descripcion.className =
+        "comunicacion-descripcion";
+
+      descripcion.textContent =
+        comunicacion.descripcion || "";
+
+      elemento.appendChild(tipo);
+      elemento.appendChild(titulo);
+      elemento.appendChild(descripcion);
+
+      if (comunicacion.enlace) {
+
+        const enlace =
+          document.createElement("a");
+
+        enlace.className =
+          "comunicacion-enlace";
+
+        enlace.href =
+          comunicacion.enlace;
+
+        enlace.target =
+          "_blank";
+
+        enlace.rel =
+          "noopener noreferrer";
+
+        enlace.textContent =
+          "Ver información";
+
+        elemento.appendChild(enlace);
+      }
+
+      contenedor.appendChild(elemento);
+
+    });
+
+    seccion.classList.remove("oculto");
+
+  } catch (error) {
+
+    console.error(
+      "Error al cargar comunicaciones:",
+      error
+    );
+
+  }
+
+}
 
 
     // ==========================================
