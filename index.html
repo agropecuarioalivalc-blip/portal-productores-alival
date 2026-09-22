@@ -455,12 +455,28 @@
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
-.comunicacion-tipo {
+.tipo-informacion {
+  color: #0066a6;
+}
+
+.tipo-recomendacion {
   color: #5aa832;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 6px;
+}
+
+.tipo-importante {
+  color: #c47a00;
+}
+
+.tipo-evento {
+  color: #7a4fa3;
+}
+
+.tipo-formulario {
+  color: #0066a6;
+}
+
+.tipo-documento {
+  color: #555555;
 }
 
 .comunicacion-titulo {
@@ -1096,13 +1112,23 @@ contenedor.appendChild(aviso);
         "comunicacion";
 
       const tipo =
-        document.createElement("div");
+  document.createElement("div");
 
-      tipo.className =
-        "comunicacion-tipo";
+tipo.className =
+  "comunicacion-tipo";
 
-      tipo.textContent =
-        comunicacion.tipo || "INFORMACIÓN";
+const tipoComunicacion =
+  String(
+    comunicacion.tipo || "INFORMACION"
+  ).toUpperCase();
+
+tipo.textContent =
+  tipoComunicacion;
+
+tipo.classList.add(
+  "tipo-" +
+  tipoComunicacion.toLowerCase()
+);
 
       const titulo =
         document.createElement("div");
