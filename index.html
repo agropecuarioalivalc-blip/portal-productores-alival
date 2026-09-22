@@ -1023,17 +1023,15 @@
 
       } catch (error) {
 
-        if (ventana) {
-          ventana.close();
-        }
-
-        alert(
-          "No fue posible abrir el documento."
-        );
-
-      }
-
+    if (ventana) {
+      ventana.close();
     }
+
+    alert(
+      "ERROR REAL: " + error.message
+    );
+
+}
 
 
     // ==========================================
