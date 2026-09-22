@@ -589,127 +589,147 @@
     // INICIAR SESIÓN
     // ==========================================
 
-    async function iniciarSesion() {
+  async function iniciarSesion() {
 
-      const codigoFinca =
-        document.getElementById("codigoFinca").value.trim();
+  const codigoFinca =
+    document.getElementById("codigoFinca").value.trim();
 
-      const pin =
-        document.getElementById("pin").value.trim();
+  const pin =
+    document.getElementById("pin").value.trim();
 
-      const boton =
-        document.getElementById("btnIngresar");
+  const boton =
+    document.getElementById("btnIngresar");
 
-      limpiarMensaje("mensajeLogin");
+  limpiarMensaje("mensajeLogin");
 
 
-      if (!codigoFinca || !pin) {
+  if (!codigoFinca || !pin) {
 
-        mostrarMensaje(
-          "mensajeLogin",
-          "Por favor ingrese el código de finca y el PIN.",
-          "error"
-        );
+    mostrarMensaje(
+      "mensajeLogin",
+      "Por favor ingrese el código de finca y el PIN.",
+      "error"
+    );
 
-        return;
+    return;
+  }
+
+
+  boton.disabled = true;
+  boton.textContent = "Ingresando...";
+
+
+  try {
+
+    const respuesta = await fetch(
+      "/api/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          codigoFinca: codigoFinca,
+          pin: pin
+        })
       }
+    );
 
 
-      boton.disabled = true;
-      boton.textContent = "Ingresando...";
+    const texto =
+      await respuesta.text();
 
 
-      try {
+    let resultado;
 
-        const respuesta = await fetch(
-          "/api/login",
-          {
-            method: "POST",
+    try {
 
-            headers: {
-              "Content-Type": "application/json"
-            },
+      resultado =
+        JSON.parse(texto);
 
-            body: JSON.stringify({
-              codigoFinca: codigoFinca,
-              pin: pin
-            })
-          }
-        );
+    } catch (error) {
 
+      console.error(
+        "Respuesta inesperada del servidor:",
+        texto
+      );
 
-        const resultado =
-          await respuesta.json();
-
-
-        if (!resultado.exito) {
-
-          mostrarMensaje(
-            "mensajeLogin",
-            resultado.mensaje ||
-            "Código de finca o PIN incorrecto.",
-            "error"
-          );
-
-          return;
-        }
-
-
-        codigoFincaSesion =
-          resultado.codigoFinca;
-
-
-        document.getElementById(
-          "nombreProductor"
-        ).textContent =
-          resultado.productor || "";
-
-
-        document.getElementById(
-          "nombreFinca"
-        ).textContent =
-          resultado.nombreFinca || "";
-
-
-        document.getElementById(
-          "codigoFincaMostrar"
-        ).textContent =
-          resultado.codigoFinca || "";
-
-
-        document.getElementById(
-          "login"
-        ).classList.add("oculto");
-
-
-        document.getElementById(
-          "portal"
-        ).classList.remove("oculto");
-
-
-        await cargarDocumentos(
-          resultado.codigoFinca
-        );
-
-
-      } catch (error) {
-
-        mostrarMensaje(
-          "mensajeLogin",
-          "No fue posible conectarse con el portal: " +
-          error.message,
-          "error"
-        );
-
-      } finally {
-
-        boton.disabled = false;
-        boton.textContent = "Ingresar";
-
-      }
+      throw new Error(
+        "El servidor no respondió correctamente. Intente nuevamente."
+      );
 
     }
 
+
+    if (!resultado.exito) {
+
+      mostrarMensaje(
+        "mensajeLogin",
+        resultado.mensaje ||
+        "Código de finca o PIN incorrecto.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    codigoFincaSesion =
+      resultado.codigoFinca;
+
+
+    document.getElementById(
+      "nombreProductor"
+    ).textContent =
+      resultado.productor || "";
+
+
+    document.getElementById(
+      "nombreFinca"
+    ).textContent =
+      resultado.nombreFinca || "";
+
+
+    document.getElementById(
+      "codigoFincaMostrar"
+    ).textContent =
+      resultado.codigoFinca || "";
+
+
+    document.getElementById(
+      "login"
+    ).classList.add("oculto");
+
+
+    document.getElementById(
+      "portal"
+    ).classList.remove("oculto");
+
+
+    await cargarDocumentos(
+      resultado.codigoFinca
+    );
+
+
+  } catch (error) {
+
+    mostrarMensaje(
+      "mensajeLogin",
+      error.message ||
+      "No fue posible conectarse con el portal. Intente nuevamente.",
+      "error"
+    );
+
+  } finally {
+
+    boton.disabled = false;
+    boton.textContent = "Ingresar";
+
+  }
+
+}
 
     // ==========================================
     // CARGAR DOCUMENTOS
