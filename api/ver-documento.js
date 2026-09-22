@@ -1,4 +1,5 @@
 module.exports = async function handler(req, res) {
+
   try {
 
     if (req.method !== "POST") {
@@ -17,45 +18,110 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // =========================
-    // VERIFICAR SESIÓN
-    // =========================
-
     const codigoSolicitado =
-  String(codigoFinca).trim();
+      String(codigoFinca).trim();
 
-    // =========================
-    // CONSULTAR PDF
-    // =========================
+    const anioSolicitado =
+      String(anio).trim();
+
+    const mesSolicitado =
+      String(mes).trim().toUpperCase();
+
 
     const respuesta = await fetch(
       "https://script.google.com/macros/s/AKfycbziCfWdKFAXKBOg0vGD68w6fgva9uRuIqQ12KmnQqphaLJxPxjH1EZHa2E_zC9NZavBxQ/exec",
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
           accion: "verDocumento",
           codigoFinca: codigoSolicitado,
-          anio: anio,
-          mes: String(mes).trim().toUpperCase()
+          anio: anioSolicitado,
+          mes: mesSolicitado
         })
       }
     );
 
-    const resultado =
-      await respuesta.json();
 
-    return res.status(
-      respuesta.ok ? 200 : 500
-    ).json(resultado);
+    const texto =
+      await respuesta.text();
+
+
+    let resultado;
+
+    try {
+
+      resultado =
+        JSON.parse(texto);
 
     } catch (error) {
 
+      return res.status(500).json({
+        exito: false,
+        mensaje:
+          "Apps Script no devolvió JSON válido: " +
+          texto.substring(0, 500)
+      });
+
+    }
+
+
+    if (!resultado.exito) {
+
+      return res.status(200).json({
+        exito: false,
+        mensaje:
+          resultado.mensaje ||
+          "Apps Script no pudo obtener el documento."
+      });
+
+    }
+
+
+    return res.status(200).json({
+
+      exito: true,
+
+      codigoFinca:
+        resultado.codigoFinca,
+
+      anio:
+        resultado.anio,
+
+      mes:
+        resultado.mes,
+
+      tipoDocumento:
+        resultado.tipoDocumento,
+
+      nombreArchivo:
+        resultado.nombreArchivo,
+
+      tipoMime:
+        resultado.tipoMime,
+
+      archivoBase64:
+        resultado.archivoBase64
+
+    });
+
+
+  } catch (error) {
+
     return res.status(500).json({
+
       exito: false,
-      mensaje: "Error: " + error.message
+
+      mensaje:
+        "ERROR INTERNO VERCEL: " +
+        error.message
+
     });
 
   }
+
+};
