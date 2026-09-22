@@ -786,64 +786,105 @@
         contenedor.innerHTML = "";
 
 
-        documentos.forEach(function(doc) {
+       documentos.forEach(function(doc) {
 
-          const elemento =
-            document.createElement("div");
+  const elemento =
+    document.createElement("div");
 
-          elemento.className =
-            "documento";
-
-
-          const periodo =
-            (doc.mes || "") +
-            " " +
-            (doc.anio || "");
+  elemento.className =
+    "documento";
 
 
-          elemento.innerHTML =
-
-            '<div class="documento-cabecera">' +
-
-              '<div class="documento-info">' +
-
-                '<div class="documento-tipo">' +
-                  escaparHTML(
-                    doc.tipoDocumento || "DOCUMENTO"
-                  ) +
-                '</div>' +
-
-                '<div class="documento-periodo">' +
-                  escaparHTML(periodo) +
-                '</div>' +
-
-                '<div class="documento-nombre">' +
-                  escaparHTML(
-                    doc.nombreArchivo || ""
-                  ) +
-                '</div>' +
-
-              '</div>' +
-
-              '<button ' +
-                'class="boton boton-documento" ' +
-                'onclick="verDocumento(' +
-                  JSON.stringify(codigoFinca) +
-                  ',' +
-                  JSON.stringify(doc.anio) +
-                  ',' +
-                  JSON.stringify(doc.mes) +
-                ')"' +
-              '>' +
-                'Ver documento' +
-              '</button>' +
-
-            '</div>';
+  const periodo =
+    (doc.mes || "") +
+    " " +
+    (doc.anio || "");
 
 
-          contenedor.appendChild(elemento);
+  const cabecera =
+    document.createElement("div");
 
-        });
+  cabecera.className =
+    "documento-cabecera";
+
+
+  const informacion =
+    document.createElement("div");
+
+  informacion.className =
+    "documento-info";
+
+
+  const tipo =
+    document.createElement("div");
+
+  tipo.className =
+    "documento-tipo";
+
+  tipo.textContent =
+    doc.tipoDocumento || "DOCUMENTO";
+
+
+  const periodoElemento =
+    document.createElement("div");
+
+  periodoElemento.className =
+    "documento-periodo";
+
+  periodoElemento.textContent =
+    periodo;
+
+
+  const nombre =
+    document.createElement("div");
+
+  nombre.className =
+    "documento-nombre";
+
+  nombre.textContent =
+    doc.nombreArchivo || "";
+
+
+  informacion.appendChild(tipo);
+  informacion.appendChild(periodoElemento);
+  informacion.appendChild(nombre);
+
+
+  const boton =
+    document.createElement("button");
+
+  boton.className =
+    "boton boton-documento";
+
+  boton.type =
+    "button";
+
+  boton.textContent =
+    "Ver documento";
+
+
+  boton.addEventListener(
+    "click",
+    function() {
+
+      verDocumento(
+        codigoFinca,
+        doc.anio,
+        doc.mes
+      );
+
+    }
+  );
+
+
+  cabecera.appendChild(informacion);
+  cabecera.appendChild(boton);
+
+  elemento.appendChild(cabecera);
+
+  contenedor.appendChild(elemento);
+
+});
 
 
       } catch (error) {
